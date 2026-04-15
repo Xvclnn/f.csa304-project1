@@ -1,9 +1,12 @@
 # tests/test_analysis.py
 import pytest
 import numpy as np
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Үндсэн модулиудаа оруулж ирэх
-
 from src.analysis import calc_terminal_velocity, is_safe_landing
 
 def test_is_safe_landing():
