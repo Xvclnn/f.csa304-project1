@@ -9,6 +9,7 @@ t_shuher_zadrahs = [50, 60, 70] #second
 delta_t_s = [1.0, 0.1, 0.01] #second
 constant_density_songolt = [True, False] 
 
+
 def plot_base_simulation():
     """
     Үндсэн симуляцын хурд болон өндрийн хугацаанаас хамаарсан график байгуулна.
