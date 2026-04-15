@@ -19,4 +19,4 @@ def find_safe_parachute_area(m=85.0, h_landing=0.0):
     v_target = 5.99  # 6 м/с-ээс бага байх ёстой
     
     A_safe = (2 * m * g) / (C * D * (v_target**2))
-    return A_safe
+    return A_safe   
