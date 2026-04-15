@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+pytest
+numpy
+matplotlib
+=======
+numpy
+>>>>>>> f92474c9ef15822eb5e5ef2a7af5b1635e153dde
