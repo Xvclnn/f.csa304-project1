@@ -84,5 +84,6 @@ def simulate_jump(m, h0, t_shuher_zadrah, dt, method, constant_density):
             v[i+1] = v_land
             h[i+1] = 0.0
 
-            return t[:i+2], v[:i+2], h[:i+2]        
+            return t[:i+2], v[:i+2], h[:i+2]  
+     
     return t, v, h

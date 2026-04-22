@@ -198,13 +198,12 @@ def plot_height_ylgaa():
     plt.savefig('../output/5_ylgaatai_initial_height.png') 
     plt.show()
         
-
 def rk4_vs_euler():
     """RK4 болон Euler аргын ялгааг харьцуулах."""
 
     fig, (plot_rk, plot_euler) = plt.subplots(2, 1, figsize=(10, 8))
-    t_rk, v_rk, h_rk = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='rk4', constant_density=False)
-    t_euler, v_euler, h_euler = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
+    t_rk, v_rk, h_rk = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='rk4', constant_density=False)
+    t_euler, v_euler, h_euler = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
 
     plot_rk.plot(t_rk, v_rk, 'b-', label='Хурд (м/с)')
     plot_rk.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
@@ -212,8 +211,8 @@ def rk4_vs_euler():
     plot_rk.set_xlabel('Хугацаа (с)')
     plot_rk.set_ylabel('Хурд (м/с)')
     plot_rk.grid(True)
-    plot_rk.legend()
-    
+    plot_rk.legend()   
+
     plot_euler.plot(t_euler, v_euler, 'g-', label='Өндөр (м)')
     plot_euler.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
     plot_euler.set_title('Хурдны өөрчлөлт Euler')
@@ -238,16 +237,17 @@ def rk4_vs_euler():
         verticalalignment='bottom',
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
     )
-
     plt.tight_layout()
     plt.savefig('../output/6_rk_euler.png')
     plt.show()
 
 
+
+
 if __name__ == "__main__":
-    plot_base_simulation()
-    plot_base_density()
-    plot_mass_analysis()
-    plot_t_zadrah()
-    plot_height_ylgaa()
+    # plot_base_simulation()
+    # plot_base_density()
+    # plot_mass_analysis()
+    # plot_t_zadrah()
+    # plot_height_ylgaa()
     rk4_vs_euler()
