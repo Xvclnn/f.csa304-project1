@@ -202,12 +202,12 @@ def rk4_vs_euler():
     """RK4 болон Euler аргын ялгааг харьцуулах."""
 
     fig, (plot_rk, plot_euler) = plt.subplots(2, 1, figsize=(10, 8))
-    t_rk, v_rk, h_rk = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='rk4', constant_density=False)
-    t_euler, v_euler, h_euler = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
+    t_rk, v_rk, h_rk = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='rk4', constant_density=False)
+    t_euler, v_euler, h_euler = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
 
     plot_rk.plot(t_rk, v_rk, 'b-', label='Хурд (м/с)')
     plot_rk.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
-    plot_rk.set_title('ДТД Өндрийн өөрчлөлт')
+    plot_rk.set_title('Хурдны өөрчлөлт RK4')
     plot_rk.set_xlabel('Хугацаа (с)')
     plot_rk.set_ylabel('Хурд (м/с)')
     plot_rk.grid(True)
@@ -215,9 +215,9 @@ def rk4_vs_euler():
     
     plot_euler.plot(t_euler, v_euler, 'g-', label='Өндөр (м)')
     plot_euler.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
-    plot_euler.set_title('ДТД Өндрийн өөрчлөлт')
+    plot_euler.set_title('Хурдны өөрчлөлт Euler')
     plot_euler.set_xlabel('Хугацаа (с)')
-    plot_euler.set_ylabel('Өндөр (м)')
+    plot_euler.set_ylabel('Хурд (м/с)')
     plot_euler.grid(True)
     plot_euler.legend()
 
@@ -239,6 +239,7 @@ def rk4_vs_euler():
     )
 
     plt.tight_layout()
+    plt.savefig('../output/6_rk_euler.png')
     plt.show()
 
 
