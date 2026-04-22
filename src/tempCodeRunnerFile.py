@@ -1,1 +1,0 @@
-t_shuher_zadrahs = [50, 60, 70]

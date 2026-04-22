@@ -1,0 +1,8 @@
+# Python compiled files
+__pycache__/
+*.pyc
+
+# pytest cache
+.pytest_cache/
+
+tempCodeRunnerFile.py
