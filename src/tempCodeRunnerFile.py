@@ -1,1 +1,1 @@
-t_shuher_zadrahs = [50, 60, 70] #second
+t_shuher_zadrahs = [50, 60, 70]

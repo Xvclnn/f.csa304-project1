@@ -9,52 +9,50 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from src.simulation import calc_density, get_drag_params, newton_2nd, simulate_jump
 
 
-# # ==================== 1. calc_density функцийн тестүүд ====================
+# ==================== 1. calc_density функцийн тестүүд ====================
 
-# def test_calc_density_normal():
-#     """Хэвийн нөхцөлд нягтын тооцоолол зөв эсэх"""
-#     # Далайн төвшинд h=0
-#     result = calc_density(0, constant_density=False)
-#     expected = 1.225
-#     assert abs(result - expected) < 0.0001
+def test_calc_density_normal():
+    """Хэвийн нөхцөлд нягтын тооцоолол зөв эсэх"""
+    result = calc_density(0, constant_density=False)
+    expected = 1.225
+    assert abs(result - expected) < 0.0001
     
-#     # 4000м өндөрт
-#     result = calc_density(4000, constant_density=False)
-#     expected = 1.225 * np.exp(-4000 / 8500.0)
-#     assert abs(result - expected) < 0.0001
+    result = calc_density(4000, constant_density=False)
+    expected = 1.225 * np.exp(-4000 / 8500.0)
+    assert abs(result - expected) < 0.0001
 
-# def test_calc_density_constant_mode():
-#     """Тогтмол нягтын горимд 1.2 буцаах эсэх"""
-#     result1 = calc_density(0, constant_density=True)
-#     assert result1 == 1.2
+def test_calc_density_constant_mode():
+    """Тогтмол нягтын горимд 1.2 буцаах эсэх"""
+    result1 = calc_density(0, constant_density=True)
+    assert result1 == 1.2
     
-#     result2 = calc_density(5000, constant_density=True)
-#     assert result2 == 1.2
+    result2 = calc_density(5000, constant_density=True)
+    assert result2 == 1.2
     
-#     result3 = calc_density(10000, constant_density=True)
-#     assert result3 == 1.2
+    result3 = calc_density(10000, constant_density=True)
+    assert result3 == 1.2
 
-# def test_calc_density_different_heights():
-#     """Өндөр нэмэгдэхэд нягт буурах эсэх"""
-#     rho_low = calc_density(0, constant_density=False)
-#     rho_mid = calc_density(4000, constant_density=False)
-#     rho_high = calc_density(8000, constant_density=False)
+def test_calc_density_different_heights():
+    """Өндөр нэмэгдэхэд нягт буурах эсэх"""
+    rho_low = calc_density(0, constant_density=False)
+    rho_mid = calc_density(4000, constant_density=False)
+    rho_high = calc_density(8000, constant_density=False)
     
-#     assert rho_low > rho_mid > rho_high
+    assert rho_low > rho_mid > rho_high
 
-# def test_calc_density_negative_height():
-#     """Сөрөг өндөрт (далайн түвшнээс доош) тестлэх"""
-#     result = calc_density(-1000, constant_density=False)
-#     expected = 1.225 * np.exp(1000 / 8500.0)  # Нягт ихсэх ёстой
-#     assert abs(result - expected) < 0.0001
-#     assert result > 1.225
+def test_calc_density_negative_height():
+    """Сөрөг өндөрт (далайн түвшнээс доош) тестлэх"""
+    result = calc_density(-1000, constant_density=False)
+    expected = 1.225 * np.exp(1000 / 8500.0)  # Нягт ихсэх ёстой
+    assert abs(result - expected) < 0.0001
+    assert result > 1.225
 
-# def test_calc_density_high_altitude():
-#     """Маш өндөрт нягт маш бага болох эсэх"""
-#     result = calc_density(20000, constant_density=False)
-#     # 20км өндөрт нягт маш бага (ойролцоогоор 0.088)
-#     assert result < 0.117
-#     assert result > 0
+def test_calc_density_high_altitude():
+    """Маш өндөрт нягт маш бага болох эсэх"""
+    result = calc_density(20000, constant_density=False)
+    # 20км өндөрт нягт маш бага (ойролцоогоор 0.088)
+    assert result < 0.117
+    assert result > 0
 
 
 # # ==================== 2. get_drag_params функцийн тестүүд ====================
@@ -255,19 +253,19 @@ from src.simulation import calc_density, get_drag_params, newton_2nd, simulate_j
 #     else:
 #         assert len(t_const) > len(t_var)
 
-def test_simulate_jump_different_time_steps():
-    """Янз бүрийн dt утгаар тестлэх"""
-    t_small, v_small, h_small = simulate_jump(m=85.0, h0=4000, t_shuher_zadrah=30.0,
-                                                dt=0.01, method='euler', constant_density=False)
-    t_large, v_large, h_large = simulate_jump(m=85.0, h0=4000, t_shuher_zadrah=30.0,
-                                                dt=0.5, method='euler', constant_density=False)
+# def test_simulate_jump_different_time_steps():
+#     """Янз бүрийн dt утгаар тестлэх"""
+#     t_small, v_small, h_small = simulate_jump(m=85.0, h0=4000, t_shuher_zadrah=30.0,
+#                                                 dt=0.01, method='euler', constant_density=False)
+#     t_large, v_large, h_large = simulate_jump(m=85.0, h0=4000, t_shuher_zadrah=30.0,
+#                                                 dt=0.5, method='euler', constant_density=False)
     
-    assert len(t_small) > len(t_large)
+#     assert len(t_small) > len(t_large)
     
-    if h_small[-1] <= 0 and h_large[-1] <= 0:
-        assert abs(t_small[-1] - t_large[-1]) < 5.0
-    else:
-        pytest.skip("Тооцоолол газар хүрэхгүй байна")
+#     if h_small[-1] <= 0 and h_large[-1] <= 0:
+#         assert abs(t_small[-1] - t_large[-1]) < 5.0
+#     else:
+#         pytest.skip("Тооцоолол газар хүрэхгүй байна")
 
 
 # # ==================== 5. simulate_jump функцийн нэмэлт тестүүд (хилийн нөхцөл) ====================

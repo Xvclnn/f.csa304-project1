@@ -23,7 +23,7 @@ def newton_2nd(v, h, t, m, t_shuher_zadrah, constant_density):
     return hurdatgal, dh_dt
 
 def simulate_jump(m, h0, t_shuher_zadrah, dt, method, constant_density):
-    max_steps = int(2000 / dt) # array deed hemjee? 
+    max_steps = int(2000 / dt)
     t = np.zeros(max_steps) # hugatsani uurclult
     v = np.zeros(max_steps) # hurdiin uurclult
     h = np.zeros(max_steps) # undriin uurclult
