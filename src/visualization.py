@@ -14,21 +14,21 @@ def plot_base_simulation():
     """
     Үндсэн симуляцын хурд болон өндрийн хугацаанаас хамаарсан график байгуулна.
     """
-    t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
+    t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
     
     fig, (plot1, plot2) = plt.subplots(2, 1, figsize=(10, 8))
     
     plot1.plot(t, v, 'b-', label='Хурд (м/с)')
-    plot1.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
-    plot1.set_title('Унах хурдны өөрчлөлт')
+    plot1.axvline(x=t_shuher_zadrahs[1], color='r', linestyle='--', label='Шүхэр задрах агшин')
+    plot1.set_title('a. Унах хурдны өөрчлөлт')
     plot1.set_xlabel('Хугацаа (с)')
     plot1.set_ylabel('Хурд (м/с)')
     plot1.grid(True)
     plot1.legend()
     
     plot2.plot(t, h, 'g-', label='Өндөр (м)')
-    plot2.axvline(x=60, color='r', linestyle='--', label='Шүхэр задрах агшин')
-    plot2.set_title('ДТД Өндрийн өөрчлөлт')
+    plot2.axvline(x=t_shuher_zadrahs[1], color='r', linestyle='--', label='Шүхэр задрах агшин')
+    plot2.set_title('a. ДТД өндрийн өөрчлөлт')
     plot2.set_xlabel('Хугацаа (с)')
     plot2.set_ylabel('Өндөр (м)')
     plot2.grid(True)
@@ -36,9 +36,9 @@ def plot_base_simulation():
     
     plt.tight_layout()
     param_text = (
-        f"m = {masses[1]} kg\n"
+        f"m = 85 kg\n"
         f"h0 = 4000 m\n"
-        f"dt = {delta_t_s[2]} s\n"
+        f"dt = {delta_t_s[1]} s\n"
         f"method = euler\n"
         f"constant_density = False"
     )
@@ -51,28 +51,40 @@ def plot_base_simulation():
         verticalalignment='bottom',
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
     )
+    plt.savefig('../output/1_base_plot.png') 
     plt.show()
 
-def plot_mass_analysis():
-    """Төрөл бүрийн масстай үеийн буух хурдыг харьцуулах."""
+def plot_base_density():
+    """
+    Үндсэн симуляцын хурд болон өндрийн хугацаанаас хамаарсан график байгуулна.
+    """
+    t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=True)
     
-    plt.figure(figsize=(10, 6))
-    for mass in masses:
-        t, v, h = simulate_jump(m=mass, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
-        plt.plot(t, v, label=f'm={mass} кг')
-        
-    plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
-    plt.title('Ялгаатай масстай үеийн хурдны өөчлөлт')
-    plt.xlabel('Хугацаа (с)')
-    plt.ylabel('Хурд (м/с)')
-    plt.grid(True)
-    plt.legend()
+    fig, (plot1, plot2) = plt.subplots(2, 1, figsize=(10, 8))
+    
+    plot1.plot(t, v, 'b-', label='Хурд (м/с)')
+    plot1.axvline(x=t_shuher_zadrahs[1], color='r', linestyle='--', label='Шүхэр задрах агшин')
+    plot1.set_title('b. Унах хурдны өөрчлөлт')
+    plot1.set_xlabel('Хугацаа (с)')
+    plot1.set_ylabel('Хурд (м/с)')
+    plot1.grid(True)
+    plot1.legend()
+    
+    plot2.plot(t, h, 'g-', label='Өндөр (м)')
+    plot2.axvline(x=t_shuher_zadrahs[1], color='r', linestyle='--', label='Шүхэр задрах агшин')
+    plot2.set_title('b. ДТД өндрийн өөрчлөлт')
+    plot2.set_xlabel('Хугацаа (с)')
+    plot2.set_ylabel('Өндөр (м)')
+    plot2.grid(True)
+    plot2.legend()
+    
+    plt.tight_layout()
     param_text = (
-        f"m = {masses[1]} kg\n"
+        f"m = 85 kg\n"
         f"h0 = 4000 m\n"
-        f"dt = {delta_t_s[2]} s\n"
+        f"dt = {delta_t_s[1]} s\n"
         f"method = euler\n"
-        f"constant_density = False"
+        f"constant_density = True"  
     )
 
     plt.text(
@@ -83,6 +95,7 @@ def plot_mass_analysis():
         verticalalignment='bottom',
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
     )
+    plt.savefig('../output/2_density_const.png') 
     plt.show()
 
 
@@ -91,17 +104,50 @@ def plot_t_zadrah():
     
     plt.figure(figsize=(10, 6))
     for t_zadrah in t_shuher_zadrahs:
-        t, v, h = simulate_jump(m=masses[1], h0=4000, t_shuher_zadrah=t_zadrah, dt=delta_t_s[2], method='euler', constant_density=False)
+        t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=t_zadrah, dt=delta_t_s[2], method='euler', constant_density=False)
         plt.plot(t, v, label=f't_shuher_zadrah={t_zadrah} с')
+        plt.axvline(x=t_zadrah, color='k', linestyle='--', alpha=0.5)
         
-    plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
-    plt.title('Шүхэр задрах хугацааны нөлөө')
+    plt.title('d. Шүхэр задрах хугацааны нөлөө')
     plt.xlabel('Хугацаа (с)')
     plt.ylabel('Хурд (м/с)')
     plt.grid(True)
     plt.legend()
     param_text = (
-        f"m = {masses[1]} kg\n"
+        f"m = {masses[2]} kg\n"
+        f"h0 = 4000 m\n"
+        f"dt = {delta_t_s[0]} s\n"
+        f"method = euler\n"
+        f"constant_density = False"
+    )
+
+    plt.text(
+        0.02, 0.98,
+        param_text,
+        transform=plt.gca().transAxes,
+        fontsize=10,
+        verticalalignment='bottom',
+        bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
+    )
+    plt.savefig('../output/3_parachute_ylgaatai_time.png') 
+    plt.show()
+
+
+def plot_mass_analysis():
+    """Төрөл бүрийн масстай үеийн буух хурдыг харьцуулах."""
+    
+    plt.figure(figsize=(10, 6))
+    for mass in masses:
+        t, v, h = simulate_jump(m=mass, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
+        plt.plot(t, h, label=f'm={mass} кг')
+        
+    plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
+    plt.title('e. Ялгаатай масстай үеийн өндрийн өөчлөлт')
+    plt.xlabel('Хугацаа (с)')
+    plt.ylabel('Өндөр (м)')
+    plt.grid(True)
+    plt.legend()
+    param_text = (
         f"h0 = 4000 m\n"
         f"dt = {delta_t_s[2]} s\n"
         f"method = euler\n"
@@ -116,23 +162,25 @@ def plot_t_zadrah():
         verticalalignment='bottom',
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
     )
+    plt.savefig('../output/4_ylgaatai_masses.png') 
     plt.show()
+
+
 
 def plot_height_ylgaa():
     ''' Анхны өндөр өөрчлөгдөхөд ямар ялгаа гарах талаар харуулна.'''
     plt.figure(figsize=(10, 6))
     for height in initial_heights:
         t, v, h = simulate_jump(m=85, h0=height, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
-        plt.plot(t, v, label=f'h0={height} m')
+        plt.plot(t, h, label=f'h0={height} m')
     plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
-    plt.title('Анхны өндрийн нөлөө')
+    plt.title('e. Ялгаатай өндрөөс үсрэх үед')
     plt.xlabel('Хугацаа (с)')
-    plt.ylabel('Хурд (м/с)')
+    plt.ylabel('Өндөр (м)')
     plt.grid(True)
     plt.legend()
     param_text = (
         f"m = {85} kg\n"
-        f"h0 = 4000 m\n"
         f"dt = {delta_t_s[2]} s\n"
         f"method = euler\n"
         f"constant_density = False"
@@ -146,6 +194,7 @@ def plot_height_ylgaa():
         verticalalignment='bottom',
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
     )
+    plt.savefig('../output/5_ylgaatai_initial_height.png') 
     plt.show()
         
 
@@ -195,6 +244,7 @@ def rk4_vs_euler():
 
 if __name__ == "__main__":
     plot_base_simulation()
+    plot_base_density()
     plot_mass_analysis()
     plot_t_zadrah()
     plot_height_ylgaa()
