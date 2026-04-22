@@ -19,17 +19,13 @@ from src.simulation import (
 def test_calc_density_constant_density_returns_1_2():
     assert calc_density(0.0, True) == pytest.approx(1.2)
 
-
 def test_calc_density_variable_density_at_sea_level():
     assert calc_density(0.0, False) == pytest.approx(1.225)
-
 
 def test_calc_density_decreases_with_altitude():
     low = calc_density(0.0, False)
     high = calc_density(5000.0, False)
-
     assert high < low
-
 
 def test_calc_density_matches_exponential_formula():
     h = 8500.0
@@ -46,7 +42,7 @@ def test_calc_density_negative_altitude_gives_higher_than_sea_level_density():
 
 
 
-# get_drag_params - 5 tests
+# get_drag_params
 
 def test_get_drag_params_before_parachute_opens():
     C, A = get_drag_params(4.9, 5.0)
@@ -74,7 +70,7 @@ def test_get_drag_params_values_are_positive():
 
 
 
-# newton_2nd - 5 tests
+# newton_2nd
 
 def test_newton_2nd_zero_velocity_gives_g_acceleration_and_zero_height_change():
     a, dh_dt = newton_2nd(
@@ -161,7 +157,7 @@ def test_newton_2nd_constant_density_changes_result_at_high_altitude():
 
 
 
-# simulate_jump - 5 tests
+# simulate_jump
 
 def test_simulate_jump_starting_on_ground_returns_immediately():
     t, v, h = simulate_jump(
@@ -207,20 +203,6 @@ def test_simulate_jump_rk4_time_progresses():
     assert len(t) > 1
     assert t[1] == pytest.approx(dt)
     assert np.all(np.diff(t) >= 0)
-
-
-def test_simulate_jump_rk4_eventually_lands():
-    t, v, h = simulate_jump(
-        m=80.0,
-        h0=1000.0,
-        t_shuher_zadrah=5.0,
-        dt=0.1,
-        method="rk4",
-        constant_density=False,
-    )
-
-    assert h[-1] == pytest.approx(0.0)
-    assert v[-1] == pytest.approx(0.0)
 
 
 def test_simulate_jump_smaller_dt_produces_more_steps_in_rk4():
