@@ -104,8 +104,9 @@ def plot_t_zadrah():
     
     plt.figure(figsize=(10, 6))
     for t_zadrah in t_shuher_zadrahs:
-        t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=t_zadrah, dt=delta_t_s[2], method='euler', constant_density=False)
-        plt.plot(t, v, label=f't_shuher_zadrah={t_zadrah} с')
+        t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=t_zadrah, dt=delta_t_s[1], method='euler', constant_density=False)
+
+        plt.plot(t, v, label=f'Шүхэр задрах хугацаа={t_zadrah}с\nГазарт унах хурд= {v[-1]} м/с')
         plt.axvline(x=t_zadrah, color='k', linestyle='--', alpha=0.5)
         
     plt.title('d. Шүхэр задрах хугацааны нөлөө')
@@ -114,9 +115,9 @@ def plot_t_zadrah():
     plt.grid(True)
     plt.legend()
     param_text = (
-        f"m = {masses[2]} kg\n"
+        f"m = 85 kg\n"
         f"h0 = 4000 m\n"
-        f"dt = {delta_t_s[0]} s\n"
+        f"dt = {delta_t_s[1]} s\n"
         f"method = euler\n"
         f"constant_density = False"
     )
@@ -138,7 +139,7 @@ def plot_mass_analysis():
     
     plt.figure(figsize=(10, 6))
     for mass in masses:
-        t, v, h = simulate_jump(m=mass, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
+        t, v, h = simulate_jump(m=mass, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
         plt.plot(t, h, label=f'm={mass} кг')
         
     plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
@@ -149,7 +150,7 @@ def plot_mass_analysis():
     plt.legend()
     param_text = (
         f"h0 = 4000 m\n"
-        f"dt = {delta_t_s[2]} s\n"
+        f"dt = {delta_t_s[1]} s\n"
         f"method = euler\n"
         f"constant_density = False"
     )
@@ -171,7 +172,7 @@ def plot_height_ylgaa():
     ''' Анхны өндөр өөрчлөгдөхөд ямар ялгаа гарах талаар харуулна.'''
     plt.figure(figsize=(10, 6))
     for height in initial_heights:
-        t, v, h = simulate_jump(m=85, h0=height, t_shuher_zadrah=60, dt=delta_t_s[2], method='euler', constant_density=False)
+        t, v, h = simulate_jump(m=85, h0=height, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
         plt.plot(t, h, label=f'h0={height} m')
     plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
     plt.title('e. Ялгаатай өндрөөс үсрэх үед')
@@ -180,8 +181,8 @@ def plot_height_ylgaa():
     plt.grid(True)
     plt.legend()
     param_text = (
-        f"m = {85} kg\n"
-        f"dt = {delta_t_s[2]} s\n"
+        f"m = 85 kg\n"
+        f"dt = {delta_t_s[1]} s\n"
         f"method = euler\n"
         f"constant_density = False"
     )
