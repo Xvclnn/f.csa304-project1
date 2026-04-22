@@ -5,7 +5,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from analysis import (
+from src.analysis import (
     calc_terminal_velocity,
     is_safe_landing,
     find_safe_parachute_area,

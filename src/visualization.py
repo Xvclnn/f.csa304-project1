@@ -3,10 +3,10 @@ import numpy as np
 from simulation import simulate_jump
 
 methods = ['euler', 'rk4']
-masses = [60, 70, 80, 90, 100]  #kg
-initial_heights = [2000, 3000, 4000, 5000]  #meter
-t_shuher_zadrahs = [50, 60, 70] #second
-delta_t_s = [1.0, 0.1, 0.01] #second
+masses = [60, 70, 80, 90, 100]
+initial_heights = [2000, 3000, 4000, 5000]
+t_shuher_zadrahs = [50, 60, 70]
+delta_t_s = [1.0, 0.1, 0.01]
 constant_density_songolt = [True, False] 
 
 
@@ -17,6 +17,7 @@ def plot_base_simulation():
     t, v, h = simulate_jump(m=85, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
     
     fig, (plot1, plot2) = plt.subplots(2, 1, figsize=(10, 8))
+
     
     plot1.plot(t, v, 'b-', label='Хурд (м/с)')
     plot1.axvline(x=t_shuher_zadrahs[1], color='r', linestyle='--', label='Шүхэр задрах агшин')

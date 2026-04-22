@@ -15,7 +15,7 @@ def calc_terminal_velocity(m, C, A, h, constant_density=False):
     g = 9.81
     D = calc_density(h, constant_density)
 
-    return np.sqrt((2 * m * g) / (C * D * A))#Terminal velocity томьёо (Тогтмол хурд)
+    return np.sqrt((2 * m * g) / (C * D * A))
 
 
 def is_safe_landing(v_landing):
@@ -31,7 +31,7 @@ def find_safe_parachute_area(m=85.0, h_landing=0.0, constant_density=False):
 
     g = 9.81
     C = 1.5
-    v_target = 5.99  # slightly below 6
+    v_target = 5.99
 
     D = calc_density(h_landing, constant_density)
 
