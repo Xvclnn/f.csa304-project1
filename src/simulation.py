@@ -15,7 +15,7 @@ def get_drag_params(t, t_shuher_zadrah):
     мэт шүхэр нээж буй байдалтай ойртож чадна.
     '''
     if t < t_shuher_zadrah:
-        return 0.7, 0.5  # C, A (Шүхэр дэлгээгүй)
+        return 0.7, 0.5
     
     shuher_neegdeh_time = 3.0
     if t < t_shuher_zadrah + shuher_neegdeh_time: 
@@ -39,13 +39,13 @@ def newton_2nd(v, h, t, m, t_shuher_zadrah, constant_density):
     return hurdatgal, dh_dt
 
 def simulate_jump(m, h0, t_shuher_zadrah, dt, method, constant_density):
-    max_steps = int(2000 / dt) # array deed hemjee? 
-    t = np.zeros(max_steps) # hugatsani uurclult
-    v = np.zeros(max_steps) # hurdiin uurclult
-    h = np.zeros(max_steps) # undriin uurclult
+    max_steps = int(2000 / dt)
+    t = np.zeros(max_steps)
+    v = np.zeros(max_steps)
+    h = np.zeros(max_steps)
     
-    h[0] = h0  # anhnii undur
-    v[0] = 0.0 # anhnii hurd  ugasa 0
+    h[0] = h0
+    v[0] = 0.0
     
     for i in range(max_steps - 1):
 
@@ -74,7 +74,6 @@ def simulate_jump(m, h0, t_shuher_zadrah, dt, method, constant_density):
             
         t[i+1] = t[i] + dt
 
-        # Хэрэв саяхан (h[i]) дээр тооцолсон тооцооны дараагын алхам нь газарт хүрэхээр байвал
         if h[i+1] <= 0: 
             alpha = h[i]/(h[i]-h[i+1])
             t_land = t[i] + alpha*dt
