@@ -15,7 +15,7 @@ def get_drag_params(t, t_shuher_zadrah):
     мэт шүхэр нээж буй байдалтай ойртож чадна.
     '''
     if t < t_shuher_zadrah:
-        return 0.7, 0.5
+        return 0.7, 0.5  # C, A (Шүхэр дэлгээгүй)
     
     shuher_neegdeh_time = 3.0
     if t < t_shuher_zadrah + shuher_neegdeh_time: 
@@ -75,20 +75,15 @@ def simulate_jump(m, h0, t_shuher_zadrah, dt, method, constant_density):
         t[i+1] = t[i] + dt
 
         # Хэрэв саяхан (h[i]) дээр тооцолсон тооцооны дараагын алхам нь газарт хүрэхээр байвал
-        if h[i+1] <= 0:
-            denom = h[i] - h[i+1]
-
-            if abs(denom) < 1e-12:
-                alpha = 0.0   # эсвэл 1.0 гэж ч болно нөхцлөөс хамаарна
-            else:
-                alpha = h[i] / denom
-
-            t_land = t[i] + alpha * dt
-            v_land = v[i] + alpha * (v[i+1] - v[i])
+        if h[i+1] <= 0: 
+            alpha = h[i]/(h[i]-h[i+1])
+            t_land = t[i] + alpha*dt
+            v_land = v[i] + alpha*(v[i+1] - v[i])
 
             t[i+1] = t_land
             v[i+1] = v_land
             h[i+1] = 0.0
 
-            return t[:i+2], v[:i+2], h[:i+2]       
+            return t[:i+2], v[:i+2], h[:i+2]  
+     
     return t, v, h
