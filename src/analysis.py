@@ -7,7 +7,7 @@ except ImportError:
 
 
 G = 9.81
-SAFE_LANDING_SPEED = 6.0
+SAFE_LANDING_HURD = 6.0
 
 
 def calc_terminal_velocity(m, C, A, h, constant_density=False):
@@ -19,12 +19,12 @@ def calc_terminal_velocity(m, C, A, h, constant_density=False):
     return np.sqrt((2 * m * G) / (C * density * A))
 
 
-def is_safe_landing(v_landing, safe_speed=SAFE_LANDING_SPEED):
+def is_safe_landing(v_landing, safe_speed=SAFE_LANDING_HURD):
     """Буух үеийн хурд аюулгүй эсэхийг шалгана."""
     return bool(abs(v_landing) < safe_speed)
 
 
-def find_safe_parachute_area(m=85.0,h_landing=0.0,constant_density=False,safe_speed=SAFE_LANDING_SPEED,C=1.5):
+def find_safe_parachute_area(m=85.0,h_landing=0.0,constant_density=False,safe_speed=SAFE_LANDING_HURD,C=1.5):
     """Аюулгүй буухад шаардагдах A-н хамгийн бага талбайг тооцоолно."""
     if m <= 0:
         raise ValueError("Масс эерэг байх шаардлагатай.")
@@ -32,18 +32,19 @@ def find_safe_parachute_area(m=85.0,h_landing=0.0,constant_density=False,safe_sp
         raise ValueError("safe_speed болон C нь эерэг байх шаардлагатай.")
 
     density = calc_density(h_landing, constant_density)
-    return (2 * m * G) / (C * density * (safe_speed ** 2))
+    return (2*m*G)/(C*density*(safe_speed**2))
 
 
 def _get_phase_indices(t, h, t_shuher_zadrah):
     """Шүхэр нээгдэхийн өмнөх болон дараах индексуудыг олно."""
-    pre_idx = np.searchsorted(t, t_shuher_zadrah, side="left") - 1
-    pre_idx = max(pre_idx, 0)
+    pre_index = np.searchsorted(t, t_shuher_zadrah, side="left")-1 
+    pre_index = max(pre_index, 0)
 
-    post_idx = len(t) - 1
-    post_idx = max(post_idx, 0)
+    t_togtworjih = t_shuher_zadrah + 10.0
+    post_index = np.searchsorted(t,t_togtworjih,side="left")
+    post_index = min(post_index, len(t)-1)
 
-    return pre_idx, post_idx
+    return pre_index, post_index
 
 
 def compare_terminal_velocities(m=85.0,h0=4000.0,t_shuher_zadrah=60.0,dt=0.1,method="rk4",constant_density=False):
