@@ -24,14 +24,8 @@ def is_safe_landing(v_landing, safe_speed=SAFE_LANDING_SPEED):
     return bool(abs(v_landing) < safe_speed)
 
 
-def find_safe_parachute_area(
-    m=85.0,
-    h_landing=0.0,
-    constant_density=False,
-    safe_speed=SAFE_LANDING_SPEED,
-    C=1.5,
-):
-    """Аюулгүй буух хамгийн бага шүхрийн талбай A-г тооцоолно."""
+def find_safe_parachute_area(m=85.0,h_landing=0.0,constant_density=False,safe_speed=SAFE_LANDING_SPEED,C=1.5):
+    """Аюулгүй буухад шаардагдах A-н хамгийн бага талбайг тооцоолно."""
     if m <= 0:
         raise ValueError("Масс эерэг байх шаардлагатай.")
     if safe_speed <= 0 or C <= 0:
@@ -52,14 +46,7 @@ def _get_phase_indices(t, h, t_shuher_zadrah):
     return pre_idx, post_idx
 
 
-def compare_terminal_velocities(
-    m=85.0,
-    h0=4000.0,
-    t_shuher_zadrah=60.0,
-    dt=0.1,
-    method="rk4",
-    constant_density=False,
-):
+def compare_terminal_velocities(m=85.0,h0=4000.0,t_shuher_zadrah=60.0,dt=0.1,method="rk4",constant_density=False):
     """
     Онолын terminal velocity-г симуляцын үр дүнтэй харьцуулна.
 
@@ -74,12 +61,8 @@ def compare_terminal_velocities(
     pre_C, pre_A = get_drag_params(t[max(pre_idx, 0)], t_shuher_zadrah)
     post_C, post_A = 1.5, 30.0
 
-    pre_theory = calc_terminal_velocity(
-        m, pre_C, pre_A, h[pre_idx], constant_density
-    )
-    post_theory = calc_terminal_velocity(
-        m, post_C, post_A, h[post_idx], constant_density
-    )
+    pre_theory = calc_terminal_velocity(m, pre_C, pre_A, h[pre_idx], constant_density)
+    post_theory = calc_terminal_velocity(m, post_C, post_A, h[post_idx], constant_density)
 
     return {
         "simulation": {"t": t, "v": v, "h": h},
@@ -102,45 +85,27 @@ def compare_terminal_velocities(
     }
 
 
-def print_analysis_report(
-    m=85.0,
-    h0=4000.0,
-    t_shuher_zadrah=60.0,
-    dt=0.1,
-    method="rk4",
-    constant_density=False,
-):
+def print_analysis_report(m=85.0,h0=4000.0,t_shuher_zadrah=60.0,dt=0.1,method="rk4",constant_density=False):
     """Theory vs practice харьцуулсан тайланг хэвлэнэ."""
-    result = compare_terminal_velocities(
-        m=m,
-        h0=h0,
-        t_shuher_zadrah=t_shuher_zadrah,
-        dt=dt,
-        method=method,
-        constant_density=constant_density,
-    )
+    result = compare_terminal_velocities(m=m,h0=h0,t_shuher_zadrah=t_shuher_zadrah,dt=dt,method=method,constant_density=constant_density)
 
     pre = result["pre_parachute"]
     post = result["post_parachute"]
     landing = result["landing"]
-    min_area = find_safe_parachute_area(
-        m=m,
-        h_landing=0.0,
-        constant_density=constant_density,
-    )
+    min_area = find_safe_parachute_area(m=m,h_landing=0.0,constant_density=constant_density)
 
-    print("=== Theory vs Simulation Comparison ===")
+    print("Онолын болон симуляцын үр дүнг харьцуулах нь:\n")
     print(
-        f"Before parachute opens: theory vt = {pre['theory_terminal_velocity']:.3f} m/s, "
-        f"simulation v = {pre['simulation_velocity']:.3f} m/s at t = {pre['time']:.3f} s"
+        f"Шүхэр нээгдэхийн өмнө: Онолын vt = {pre['theory_terminal_velocity']:.3f} m/s, "
+        f"Симуляцын v = {pre['simulation_velocity']:.3f} m/s at t = {pre['time']:.3f} s"
     )
     print(
-        f"After parachute opens: theory vt = {post['theory_terminal_velocity']:.3f} m/s, "
-        f"simulation v = {post['simulation_velocity']:.3f} m/s at t = {post['time']:.3f} s"
+        f"Шүхэр нээгдэхийн өмнө: Онолын vt = {post['theory_terminal_velocity']:.3f} m/s, "
+        f"Симуляцын v = {post['simulation_velocity']:.3f} m/s at t = {post['time']:.3f} s"
     )
-    print(f"Landing velocity = {landing['velocity']:.3f} m/s")
-    print(f"Safe to land? {'Yes' if landing['is_safe'] else 'No'}")
-    print(f"Minimum safe parachute area A = {min_area:.3f} m^2")
+    print(f"Газарт буух хурд = {landing['velocity']:.3f} m/s")
+    print(f"Газардахад аюулгүй эсэх? {'Yes' if landing['is_safe'] else 'No'}")
+    print(f"Аюулгүй газардахад шаардагдах min(A) утга = {min_area:.3f} m^2")
 
 
 if __name__ == "__main__":
