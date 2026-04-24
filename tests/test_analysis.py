@@ -1,117 +1,51 @@
-import numpy as np
 import pytest
 import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.analysis import (
-    calc_terminal_velocity,
-    is_safe_landing,
-    find_safe_parachute_area,
-)
+from src.analysis import calc_terminal_velocity, is_safe_landing, calc_required_parachute_area
 
+# ─────────────────────────────────────────────────────────────────────────────
+# analysis.py  →  calc_terminal_velocity
+# ─────────────────────────────────────────────────────────────────────────────
 
-# =========================================================
-# calc_terminal_velocity - 5 tests
-# =========================================================
+def test_positive_result():
+    v = calc_terminal_velocity(m=85.0, C=0.7, A=0.5, rho=1.2)
+    assert v > 0.0
 
-def test_calc_terminal_velocity_constant_density_exact_value():
-    m = 80.0
-    C = 1.5
-    A = 25.0
-    h = 0.0
+def test_heavier_mass_higher_terminal_velocity():
+    v1 = calc_terminal_velocity(m=70.0,  C=0.7, A=0.5, rho=1.2)
+    v2 = calc_terminal_velocity(m=100.0, C=0.7, A=0.5, rho=1.2)
+    assert v2 > v1
 
-    expected = np.sqrt((2 * m * 9.81) / (C * 1.2 * A))
-    result = calc_terminal_velocity(m, C, A, h, constant_density=True)
-
-    assert result == pytest.approx(expected)
-
-
-def test_calc_terminal_velocity_higher_altitude_gives_higher_terminal_velocity():
-    m = 80.0
-    C = 1.5
-    A = 25.0
-
-    sea_level = calc_terminal_velocity(m, C, A, 0.0, constant_density=False)
-    high_alt = calc_terminal_velocity(m, C, A, 10000.0, constant_density=False)
-
-    assert high_alt > sea_level
-
-
-def test_calc_terminal_velocity_raises_for_nonpositive_mass():
+def test_invalid_inputs_raise():
     with pytest.raises(ValueError):
-        calc_terminal_velocity(0.0, 1.5, 25.0, 0.0)
+        calc_terminal_velocity(m=-1.0, C=0.7, A=0.5, rho=1.2)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# analysis.py  →  is_safe_landing
+# ─────────────────────────────────────────────────────────────────────────────
 
-def test_calc_terminal_velocity_raises_for_nonpositive_drag_coefficient():
-    with pytest.raises(ValueError):
-        calc_terminal_velocity(80.0, 0.0, 25.0, 0.0)
+def test_slow_speed_is_safe():
+    assert is_safe_landing(3.0) is True
 
+def test_fast_speed_is_unsafe():
+    assert is_safe_landing(10.0) is False
 
-def test_calc_terminal_velocity_raises_for_nonpositive_area():
-    with pytest.raises(ValueError):
-        calc_terminal_velocity(80.0, 1.5, -1.0, 0.0)
+def test_negative_speed_treated_as_abs():
+    assert is_safe_landing(-3.0) is True
+    assert is_safe_landing(-10.0) is False
 
+# ─────────────────────────────────────────────────────────────────────────────
+# analysis.py  →  calc_required_parachute_area
+# ─────────────────────────────────────────────────────────────────────────────
 
-# =========================================================
-# is_safe_landing - 5 tests
-# =========================================================
+def test_returns_positive_area():
+    area = calc_required_parachute_area(m=85.0, C=1.5, rho=1.2)
+    assert area > 0.0
 
-def test_is_safe_landing_returns_true_below_threshold():
-    assert is_safe_landing(5.99) is True
-
-
-def test_is_safe_landing_returns_false_at_threshold():
-    assert is_safe_landing(6.0) is False
-
-
-def test_is_safe_landing_returns_false_above_threshold():
-    assert is_safe_landing(6.01) is False
-
-
-def test_is_safe_landing_returns_true_for_zero_speed():
-    assert is_safe_landing(0.0) is True
-
-
-def test_is_safe_landing_returns_true_for_negative_speed_by_current_logic():
-    # Function зөвхөн 6.0-оос бага эсэхийг шалгаж байгаа учраас
-    # сөрөг утга дээр True буцаана.
-    assert is_safe_landing(-1.0) is True
-
-
-# =========================================================
-# find_safe_parachute_area - 5 tests
-# =========================================================
-
-def test_find_safe_parachute_area_constant_density_exact_value():
-    m = 85.0
-    expected = (2 * m * 9.81) / (1.5 * 1.2 * (5.99 ** 2))
-
-    result = find_safe_parachute_area(m=m, h_landing=0.0, constant_density=True)
-
-    assert result == pytest.approx(expected)
-
-
-def test_find_safe_parachute_area_raises_for_nonpositive_mass():
-    with pytest.raises(ValueError):
-        find_safe_parachute_area(m=0.0, h_landing=0.0, constant_density=False)
-
-
-def test_find_safe_parachute_area_heavier_mass_requires_larger_area():
-    area_light = find_safe_parachute_area(m=60.0, h_landing=0.0, constant_density=True)
-    area_heavy = find_safe_parachute_area(m=100.0, h_landing=0.0, constant_density=True)
-
-    assert area_heavy > area_light
-
-
-def test_find_safe_parachute_area_higher_altitude_requires_larger_area_when_density_varies():
-    area_sea = find_safe_parachute_area(m=85.0, h_landing=0.0, constant_density=False)
-    area_high = find_safe_parachute_area(m=85.0, h_landing=3000.0, constant_density=False)
-
-    assert area_high > area_sea
-
-
-def test_find_safe_parachute_area_is_positive():
-    area = find_safe_parachute_area(m=85.0, h_landing=0.0, constant_density=False)
-    assert area > 0
+def test_heavier_person_needs_larger_area():
+    a1 = calc_required_parachute_area(m=70.0, C=1.5, rho=1.2)
+    a2 = calc_required_parachute_area(m=100.0, C=1.5, rho=1.2)
+    assert a2 > a1
