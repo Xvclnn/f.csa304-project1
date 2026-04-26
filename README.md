@@ -20,44 +20,44 @@
 - Matplotlib
 - Pytest
 
-## Урьдчилсан шаардлага
+## requirements
 
 Дараах зүйлс систем дээр суусан байх шаардлагатай:
 
-- Python 3.10+ зөвлөж байна
+- Python 3.10 or higher
 - `pip`
 
-Сонголтоор:
+Optional:
 
 - `venv` эсвэл өөр виртуал орчны хэрэгсэл
 
-## Суулгалт ба тохиргоо
+## Installation
 
-1. Репозиторыг клон хийнэ.
+1. Repository clone хийнэ.
 
 ```bash
 git clone <repository-url>
 cd f.csa304-project1
 ```
 
-2. Виртуал орчин үүсгээд идэвхжүүлнэ.
+2. Virtual орчин үүсгээд идэвхжүүлнэ.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-3. Хамаарлуудыг суулгана.
+3. Dependency суулгана.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Энэ төсөлд тусгай environment variable шаардлагагүй.
+4. Энэхүү project-д тусгай environment variable шаардлагагүй.
 
 ## Ашиглах заавар
 
-### 1. Шинжилгээний тайлан хэвлэх
+### 1. Шинжилгээний үр дүнг гаргах
 
 ```bash
 python3 src/analysis.py
@@ -75,7 +75,7 @@ python3 src/analysis.py
 python3 src/visualization.py
 ```
 
-Энэ нь `output/` хавтсанд графикууд үүсгэнэ.
+Энэ нь `output/` хавтсанд үр дүн зургуудыг бий болгоно.
 
 ### 3. Тест ажиллуулах
 
@@ -114,17 +114,9 @@ f.csa304-project1/
 ├── tests/
 │   ├── test_simulation.py
 │   └── test_analysis.py
-├── output/                # Үүсгэсэн графикууд
+├── output/                # Үүсгэсэн зурагууд
 ├── docs/
 │   └── report.odt
 ├── requirements.txt
 └── README.md
 ```
-
-## Хөгжүүлэлт
-
-Хэрэв та сайжруулалт санал болгох, алдаа мэдэгдэх, эсвэл шинэ өөрчлөлт оруулахыг хүсвэл issue нээх эсвэл pull request илгээхэд нээлттэй.
-
-## Лиценз
-
-Энэ төсөлд лиценз хараахан тодорхойлоогүй байна. Хэрэв шаардлагатай бол `MIT` эсвэл `Apache 2.0` лиценз сонгон нэмэх боломжтой.

@@ -140,12 +140,12 @@ def plot_mass_analysis():
     plt.figure(figsize=(10, 6))
     for mass in masses:
         t, v, h = simulate_jump(m=mass, h0=4000, t_shuher_zadrah=60, dt=delta_t_s[1], method='euler', constant_density=False)
-        plt.plot(t, h, label=f'm={mass} кг')
+        plt.plot(t, v, label=f'm={mass} кг')
         
     plt.axvline(x=60, color='k', linestyle='--', alpha=0.5)
-    plt.title('e. Ялгаатай масстай үеийн өндрийн өөчлөлт')
+    plt.title('e. Ялгаатай масстай үеийн хурдны өөчлөлт')
     plt.xlabel('Хугацаа (с)')
-    plt.ylabel('Өндөр (м)')
+    plt.ylabel('Хурд (м/с)')
     plt.grid(True)
     plt.legend()
     param_text = (
@@ -245,9 +245,9 @@ def rk4_vs_euler():
 
 
 if __name__ == "__main__":
-    # plot_base_simulation()
-    # plot_base_density()
-    # plot_mass_analysis()
-    # plot_t_zadrah()
-    # plot_height_ylgaa()
+    plot_base_simulation()
+    plot_base_density()
+    plot_mass_analysis()
+    plot_t_zadrah()
+    plot_height_ylgaa()
     rk4_vs_euler()
